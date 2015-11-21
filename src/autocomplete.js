@@ -40,17 +40,18 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
             restrict: 'EA', //E = element, A = attribute, C = class, M = comment         
             scope: {
                 //@ reads the attribute value, = provides two-way binding, & works with functions
-                title: '@',
+                searchfield: '@',
+                name:        '@',
                 placeholder: '@',
-                limit: '@',
-                countries:'='
-                 },
+                limit:       '@',
+                data:        '='
+                },
                 templateUrl: function(element, attrs) {
                 return attrs.templateUrl || TEMPLATE_URL;
             },
        
             link: function ($scope, element, attrs) { 
-            
+ 
                 if(attrs.ngClick || attrs.href === '' || attrs.href === '#'){
                     elem.on('click', function(e){
                     e.preventDefault();
@@ -85,7 +86,7 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
                 $scope.onKeyDown = function(e){
             
                     if(e.which==8 || (e.which>64 && e.which<91)){
-                        var results = showAll($scope.newData,$scope.countries);
+                        var results = showAll($scope.newData,$scope.data);
                         $scope.allData = results;
                     }else if(e.which==40){
                         if($scope.allData.length>0 && $scope.currentIndex < $scope.allData.length-1 ){
@@ -96,7 +97,7 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
                         if($scope.allData.length>0 && $scope.currentIndex>0 ){
                     
                         $scope.currentIndex -=1;
-                        }
+                        }                   
                     }
                 };
                 $scope.selectItem = function(index){
@@ -104,12 +105,23 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
                     $scope.$parent.autoCompleteData = $scope.allData[index];
                 }
                 function showAll(target,data){
-                var returnResults = [];
-           
+                    var variableName = $scope.name;
+                    if(!Array.isArray(data)){
+                        return null;
+                    }
+                    var returnResults = [];
+                    
                     for(var x=0;x<data.length;x++){
-                        var returnData = data[x].name.toLowerCase();
-                        if(returnData.indexOf(target)>-1){
-                            returnResults.push(data[x]);
+                        if(typeof data[x]==='object'){
+                            var returnData = data[x][variableName].toLowerCase();
+                            if(returnData.indexOf(target)>-1){
+                                returnResults.push(data[x]);
+                            }
+                        } else if( typeof data[x]==='string'){
+                            var returnData = data[x].toLowerCase();
+                            if(returnData.indexOf(target)>-1){
+                                returnResults.push(data[x]);
+                            }
                         }
                     } 
                     return returnResults;
