@@ -105,6 +105,7 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
                     $scope.$parent.autoCompleteData = $scope.allData[index];
                 }
                 function showAll(target,data){
+
                     var variableName = $scope.name;
                     if(!Array.isArray(data)){
                         return null;
@@ -120,7 +121,9 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
                         } else if( typeof data[x]==='string'){
                             var returnData = data[x].toLowerCase();
                             if(returnData.indexOf(target)>-1){
-                                returnResults.push(data[x]);
+                                var Obj = {};
+                                Obj.name = data[x];
+                                returnResults.push(Obj);
                             }
                         }
                     } 
