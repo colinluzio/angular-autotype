@@ -10,3 +10,5 @@
  */
 angular
   .module('testApp', []);
+
+var app = angular.module('myApp',["auto-type"]);
