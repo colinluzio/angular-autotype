@@ -37,12 +37,36 @@ describe('Testing autotype directive', function() {
       $scope.$digest();
       var inputField = element.find('input');
       var e = $.Event('keyup');
-      var scope = element.isolateScope()
       e.which = 65; // letter: a
       inputField.val('a');
       inputField.trigger('input');
       inputField.trigger(e);
-      console.log(scope.data);
       expect(element.find('li').length).toBe(5);
+  });
+  it('should append only 2 elements', function() {
+   var element = angular.element('<div auto-type placeholder="Search for country" searchfield="name" name="name" data="countries" limit="5"></div>');
+   $scope.countries = ['Afghanistan','tanzania','pakistan','bhutan', 'kazakstan'];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('input');
+      var e = $.Event('keyup');
+      e.which = 65; // letter: a
+      inputField.val('ia');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      expect(element.find('li').length).toBe(1);
+  });
+   it('should return an empty array when keydown and value is empty ', function() {
+   var element = angular.element('<div auto-type placeholder="Search for country" searchfield="name" name="name" data="countries" limit="5"></div>');
+   $scope.countries = ['Afghanistan','tanzania','pakistan','bhutan', 'kazakstan'];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('input');
+      var e = $.Event('keyup');
+      e.which = 8; // Backspace
+      inputField.val('');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      expect(element.find('li').length).toBe(0);
   });
 });
