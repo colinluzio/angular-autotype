@@ -1,4 +1,4 @@
-describe('Unit testing great quotes', function() {
+describe('Testing autotype directive', function() {
   var $compile,
       $rootScope;
 
@@ -19,16 +19,30 @@ describe('Unit testing great quotes', function() {
     var element = $compile('<div auto-type placeholder="Search for country" searchfield="name" name="name" data="data" limit="5"></div>')($rootScope);
     // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
     $rootScope.$digest();
-    console.log(element);
     // Check that the compiled element contains the templated content
     expect(element.html()).toContain("placeholder");
   });
-  //Check placeholder is compiled correctly
-  it('should render placeholder string', function() {
+  //Check placeholder is  correctly
+  it('should render placeholder string correctly', function() {
       var element = angular.element('<div auto-type placeholder="Search for country" searchfield="name" name="name" data="data" limit="5"></div>');
       $scope.selectedCountry = null;
       $compile(element)($scope);
       $scope.$digest();
       expect(element.find('input').attr('placeholder')).toEqual('Search for country');
     });
+ it('should render dropdown with correct number of elements', function() {
+   var element = angular.element('<div auto-type placeholder="Search for country" searchfield="name" name="name" data="countries" limit="5"></div>');
+   $scope.countries = ['Afghanistan','tanzania','pakistan','bhutan', 'kazakstan'];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('input');
+      var e = $.Event('keyup');
+      var scope = element.isolateScope()
+      e.which = 65; // letter: a
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      console.log(scope.data);
+      expect(element.find('li').length).toBe(5);
+  });
 });
