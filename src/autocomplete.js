@@ -105,10 +105,12 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
                     $scope.$parent.autoCompleteData = $scope.allData[index];
                 }
                 function showAll(target,data){
-
+                    
                     var variableName = $scope.name;
                     if(!Array.isArray(data)){
                         return null;
+                    }else if(target.length==0){
+                        return [];
                     }
                     var returnResults = [];
                     
