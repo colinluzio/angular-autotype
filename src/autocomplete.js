@@ -57,7 +57,6 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
                     e.preventDefault();
                     });
                 }           
-              
                 $scope.showDropdown = false;
                 $scope.currentIndex = 0;
                 $scope.allData = [];
@@ -84,11 +83,12 @@ angular.module('auto-type',[]).directive('autoType',['$templateCache',function($
             
                 // Handle all keydown events
                 $scope.onKeyDown = function(e){
-            
+
                     if(e.which==8 || (e.which>64 && e.which<91)){
                         var results = showAll($scope.newData,$scope.data);
                         $scope.allData = results;
                     }else if(e.which==40){
+                        $scope.testNumber =8;
                         if($scope.allData.length>0 && $scope.currentIndex < $scope.allData.length-1 ){
                         $scope.currentIndex +=1;    
                         }

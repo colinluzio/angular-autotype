@@ -69,4 +69,21 @@ describe('Testing autotype directive', function() {
       inputField.trigger(e);
       expect(element.find('li').length).toBe(0);
   });
+   it('should select the second value in the array on keydown ', function() {
+   var element = angular.element('<div auto-type placeholder="Search for country" searchfield="name" name="name" data="countries" limit="5"></div>');
+   $scope.countries = ['Afghanistan','tanzania','pakistan','bhutan', 'kazakstan'];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('input');
+      var e = $.Event('keyup');
+      e.which = 65; // letter: a
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      var e = $.Event("keyup", { which: 40}); //"keydown" if that's what you're doing
+      inputField.trigger(e);
+      var scope = element.isolateScope();
+ 
+      expect(scope.currentIndex).toBe(1);
+  });
 });
